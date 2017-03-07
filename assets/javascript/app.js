@@ -2,9 +2,9 @@ $(document).ready(function() {
 
     //initial array of types of sports to pre-populate starter buttons
 
-    var topics = ["Soccer", "Hockey", "Basketball", "Baseball", "Football", "Volleyball", "Golf"];
+    var topics = ["Soccer", "Hockey", "Basketball", "Baseball", "Football", "Lacrosse", "Golf", "Curling", "Bowling"];
 
-    //function to display content to DOM using Giphy API and JSON
+    //first need function to GET attributes and display content to DOM using Giphy API and JSON
 
     function displayInfo() {
         var sport = $(this).attr("sport-name");
@@ -16,6 +16,10 @@ $(document).ready(function() {
             url: queryURL,
             method: "GET"
         }).done(function(response) {
+
+            //empty sports div so new selection appends to emtpy div - do not want previous searches listed
+            $("#sports").empty();
+
             var results = response.data;
 
             for (var i = 0; i < results.length; i++) {
@@ -37,11 +41,11 @@ $(document).ready(function() {
 
     }
 
-    //create buttons out of array indexes
+    //create buttons out of array indexes - gets information from JSON
 
     function renderButtons() {
 
-        //delete buttons and rerun so no repeats
+        //delete original array of buttons everytime renders so they do not keep repeating
 
         $("#sportButtons").empty();
 
@@ -51,6 +55,8 @@ $(document).ready(function() {
 
             var sportRender = $("<button>");
 
+            //add class and attribute of name so display function knows what to GET.
+
             sportRender.addClass("sport");
             sportRender.attr("sport-name", topics[i]);
             sportRender.text(topics[i]);
@@ -58,7 +64,7 @@ $(document).ready(function() {
         }
     }
 
-    //on click function to add an additional sport button when submitted - push input to array.
+    //on click event to add an additional sport button when submitted - push input to array.
 
     $("#addSport").on("click", function(event) {
         event.preventDefault();
@@ -71,6 +77,8 @@ $(document).ready(function() {
 
     //on click entire document to cover all elements named "sport" and run display function
     $(document).on("click", ".sport", displayInfo);
+
+    //on click of gif still image, gif will play. When clicked again, gif will pause.
 
     //run function to display all buttons on startup
     renderButtons();
